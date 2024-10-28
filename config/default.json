@@ -1,0 +1,4 @@
+{
+    "mongoURI": "sua_string_de_conexão_mongodb",
+    "jwtSecret": "seu_segredo_jwt"
+  }
