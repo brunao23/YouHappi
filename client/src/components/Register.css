@@ -1,30 +1,44 @@
-.register-container {
+.app-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #e0f7fa;
-  padding: 20px;
+  background-color: var(--background-color);
 }
 
-.register-form {
-  background-color: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.register-container {
   width: 100%;
   max-width: 400px;
+  padding: 2rem;
+  background-color: var(--card-background);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px var(--shadow-color);
 }
 
-h1 {
-  text-align: center;
-  color: #00838f;
+.app-title {
+  font-size: 2.5rem;
   margin-bottom: 0.5rem;
+  color: var(--primary-color);
+  text-align: center;
 }
 
-p {
+.app-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
   text-align: center;
-  color: #0097a7;
+}
+
+.register-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+  text-align: center;
+}
+
+.register-container p {
+  text-align: center;
+  color: var(--text-color);
   margin-bottom: 1.5rem;
 }
 
@@ -32,55 +46,50 @@ p {
   margin-bottom: 1rem;
 }
 
-label {
+.form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  color: #00838f;
-}
-
-input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #b2ebf2;
-  border-radius: 4px;
-}
-
-.btn {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #00acc1;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.btn:hover {
-  background-color: #00838f;
-}
-
-.btn:disabled {
-  background-color: #b2ebf2;
-  cursor: not-allowed;
+  color: var(--text-color);
 }
 
 .error-message {
-  color: #d32f2f;
+  color: #e74c3c;
   margin-bottom: 1rem;
   text-align: center;
+  font-weight: bold;
 }
 
 .login-link {
-  text-align: center;
   margin-top: 1rem;
+  text-align: center;
 }
 
 .login-link a {
-  color: #00acc1;
-  text-decoration: none;
+  color: var(--primary-color);
+  font-weight: bold;
 }
 
 .login-link a:hover {
-  text-decoration: underline;
+  color: var(--secondary-color);
+}
+
+button {
+  width: 100%;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #27ae60;
+}
+
+button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
 }

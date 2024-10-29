@@ -49,9 +49,11 @@ const Register = () => {
   };
 
   return (
-    <div className="register-container">
-      <div className="register-form">
-        <h1>Cadastre-se no YouHappi</h1>
+    <div className="app-container">
+      <div className="register-container card">
+        <h1 className="app-title">YouHappi</h1>
+        <h2 className="app-subtitle">Você mais feliz</h2>
+        <h3 className="register-subtitle">Cadastre-se</h3>
         <p>Comece sua jornada para o bem-estar mental</p>
         {erro && <div className="error-message">{erro}</div>}
         <form onSubmit={onSubmit}>
@@ -105,7 +107,7 @@ const Register = () => {
               placeholder="Confirme sua senha"
             />
           </div>
-          <button type="submit" className="btn btn-primary" disabled={carregando}>
+          <button type="submit" disabled={carregando}>
             {carregando ? 'Cadastrando...' : 'Cadastrar'}
           </button>
         </form>

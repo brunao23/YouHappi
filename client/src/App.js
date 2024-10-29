@@ -1,18 +1,27 @@
+// src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 
 function App() {
+  // Função simples para verificar se o usuário está autenticado
+  const isAuthenticated = () => {
+    return localStorage.getItem('token') !== null;
+  };
+
   return (
     <Router>
       <div className="App">
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/" element={<Login />} />
+          <Route 
+            path="/dashboard" 
+            element={isAuthenticated() ? <Dashboard /> : <Navigate to="/login" />} 
+          />
+          <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
       </div>
     </Router>

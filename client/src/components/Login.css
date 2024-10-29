@@ -1,103 +1,89 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
-body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #e0f7fa 0%, #80deea 100%);
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
+.app-container {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.app-container {
-  width: 100%;
-  max-width: 400px;
-  padding: 20px;
+  min-height: 100vh;
+  background-color: var(--background-color);
 }
 
 .login-container {
-  background-color: white;
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  background-color: var(--card-background);
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 30px;
+  box-shadow: 0 4px 6px var(--shadow-color);
 }
 
 .app-title {
   font-size: 2.5rem;
-  color: #00acc1;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
   text-align: center;
-  margin-bottom: 10px;
+}
+
+.app-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  text-align: center;
 }
 
 .login-subtitle {
   font-size: 1.2rem;
-  color: #00838f;
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
   text-align: center;
-  margin-bottom: 20px;
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
 }
 
-label {
+.form-group label {
   display: block;
-  margin-bottom: 5px;
-  color: #00838f;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #b2ebf2;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-.login-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #00acc1;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.login-button:disabled {
-  background-color: #b2ebf2;
-  cursor: not-allowed;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
 }
 
 .error-message {
-  color: #d32f2f;
-  margin-bottom: 15px;
+  color: #e74c3c;
+  margin-bottom: 1rem;
+  font-weight: bold;
   text-align: center;
 }
 
 .register-link {
+  margin-top: 1rem;
   text-align: center;
-  margin-top: 15px;
-  color: #00838f;
 }
 
 .register-link a {
-  color: #00acc1;
-  text-decoration: none;
-  font-weight: 600;
+  color: var(--primary-color);
+  font-weight: bold;
 }
 
-@media (max-width: 480px) {
-  .app-container {
-    padding: 10px;
-  }
+.register-link a:hover {
+  color: var(--secondary-color);
+}
 
-  .login-container {
-    padding: 20px;
-  }
+button {
+  width: 100%;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #27ae60;
+}
+
+button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
 }

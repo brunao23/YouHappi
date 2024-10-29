@@ -32,9 +32,10 @@ const Login = () => {
 
   return (
     <div className="app-container">
-      <div className="login-container">
+      <div className="login-container card">
         <h1 className="app-title">YouHappi</h1>
-        <h2 className="login-subtitle">Entrar na sua conta</h2>
+        <h2 className="app-subtitle">Você mais feliz</h2>
+        <h3 className="login-subtitle">Entrar na sua conta</h3>
         {erro && <div className="error-message">{erro}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -61,7 +62,7 @@ const Login = () => {
               placeholder="Sua senha"
             />
           </div>
-          <button type="submit" className="login-button" disabled={carregando}>
+          <button type="submit" disabled={carregando}>
             {carregando ? 'Entrando...' : 'Entrar'}
           </button>
         </form>
