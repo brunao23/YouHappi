@@ -19,12 +19,9 @@ app.use('/api/users', userRoutes);
 
 // Serve os arquivos estáticos do React build
 if (process.env.NODE_ENV === 'production') {
-  // Servir arquivos estáticos
   app.use(express.static(path.join(__dirname, '../client/build')));
 
-  // Manipular rotas do SPA
   app.get('*', (req, res) => {
-    // Não servir o app React para rotas da API
     if (req.url.startsWith('/api/')) {
       return res.status(404).send('API endpoint not found');
     }
@@ -38,11 +35,5 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something broke!');
 });
 
-const PORT = process.env.PORT || 5000;
-
-// Vercel usa uma variável de ambiente diferente para a porta
-const serverPort = process.env.PORT || process.env.VERCEL_PORT || PORT;
-
-app.listen(serverPort, () => console.log(`Servidor rodando na porta ${serverPort}`));
-
-module.exports = app; // Importante para o Vercel
+// Não inicie o servidor aqui. Em vez disso, exporte o app
+module.exports = app;
