@@ -9,7 +9,7 @@ const app = express();
 // Middleware
 app.use(express.json({ extended: false }));
 
-// Middleware para logging de requisições
+// Logging middleware
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
   next();
@@ -20,22 +20,37 @@ app.use('/api/users', userRoutes);
 
 // Serve os arquivos estáticos do React build
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/build')));
+  app.use((req, res, next) => {
+    if (req.url.startsWith('/static/')) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    } else {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    }
+    next();
+  });
+
+  app.use(express.static(path.join(__dirname, '../client/build'), { 
+    etag: true,
+    lastModified: true,
+    setHeaders: (res, path) => {
+      if (path.endsWith('.html')) {
+        res.setHeader('Cache-Control', 'no-cache');
+      }
+    }
+  }));
 
   app.get('*', (req, res) => {
-    if (req.url.startsWith('/api/')) {
-      return res.status(404).json({ error: 'API endpoint not found' });
-    }
     res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
   });
 }
 
-// Tratamento de erros mais robusto
+// Tratamento de erros
 app.use((err, req, res, next) => {
   console.error('Erro no servidor:', err);
   res.status(err.status || 500).json({ 
     error: 'Erro interno do servidor', 
-    message: process.env.NODE_ENV === 'production' ? 'Algo deu errado' : err.message 
+    message: process.env.NODE_ENV === 'production' ? 'Algo deu errado' : err.message,
+    stack: process.env.NODE_ENV === 'production' ? '🥞' : err.stack
   });
 });
 
@@ -47,19 +62,16 @@ const startServer = async () => {
 
     const PORT = process.env.PORT || 5000;
     
-    // Apenas inicie o servidor se não estivermos em um ambiente serverless
     if (process.env.NODE_ENV !== 'production') {
       app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
     } else {
       console.log('Servidor pronto para ambiente serverless');
     }
   } catch (error) {
-    console.error('Falha ao iniciar o servidor:', error.message);
-    // Em um ambiente de produção, você pode querer implementar uma lógica de retry aqui
+    console.error('Falha ao iniciar o servidor:', error);
   }
 };
 
-// Iniciar o servidor apenas se este arquivo for executado diretamente
 if (require.main === module) {
   startServer();
 }
