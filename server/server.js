@@ -38,7 +38,6 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something broke!');
 });
 
-<<<<<<< HEAD
 // Função para iniciar o servidor (útil para desenvolvimento local)
 const startServer = () => {
   const PORT = process.env.PORT || 3000;
@@ -52,7 +51,3 @@ if (process.env.NODE_ENV !== 'production') {
 
 // Exportar o app para uso com serverless functions
 module.exports = app;
-=======
-// Exporte o app em vez de iniciar o servidor
-module.exports = app;
->>>>>>> 68f91ff39aac3bd8b408b1236fd72c9ddcc12baf
