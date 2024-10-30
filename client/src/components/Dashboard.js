@@ -1,6 +1,6 @@
 // src/components/Dashboard.js
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Dashboard.css';
@@ -9,13 +9,13 @@ const Dashboard = () => {
   const [user, setUser] = useState(null);
   const [gratitudeEntry, setGratitudeEntry] = useState('');
   const [gratitudeEntries, setGratitudeEntries] = useState([]);
-  const [content, setContent] = useState({ youtube: [], ebooks: [], podcasts: [] });
+  const [_content, setContent] = useState({ youtube: [], ebooks: [], podcasts: [] });
   const [activeTab, setActiveTab] = useState('gratitude');
   const [motivationMessage, setMotivationMessage] = useState('');
   const [positiveNews, setPositiveNews] = useState([]);
   const [currentNewsIndex, setCurrentNewsIndex] = useState(0);
   const [youtubeVideos, setYoutubeVideos] = useState([]);
-  const [youtubeCategories, setYoutubeCategories] = useState([
+  const [youtubeCategories] = useState([
     'Motivação', 
     'Desenvolvimento Pessoal', 
     'Meditação', 
@@ -27,7 +27,7 @@ const Dashboard = () => {
   const [activeYoutubeCategory, setActiveYoutubeCategory] = useState('Motivação');
   const [expandedVideo, setExpandedVideo] = useState(null);
   const [ebooks, setEbooks] = useState([]);
-  const [ebookCategories, setEbookCategories] = useState([
+  const [ebookCategories] = useState([
     'Todos',
     'Desenvolvimento Pessoal',
     'Empreendedorismo',
@@ -37,7 +37,7 @@ const Dashboard = () => {
   ]);
   const [activeEbookCategory, setActiveEbookCategory] = useState('Todos');
   const [podcasts, setPodcasts] = useState([]);
-  const [podcastCategories, setPodcastCategories] = useState([
+  const [podcastCategories] = useState([
     'Desenvolvimento Pessoal',
     'Motivação',
     'Produtividade',
@@ -50,28 +50,7 @@ const Dashboard = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchUserData();
-    fetchGratitudeEntries();
-    fetchContent();
-    fetchDailyMotivation();
-    fetchPositiveNews();
-    fetchYoutubeVideos('Motivação');
-    fetchEbooks('Todos');
-    fetchPodcasts('Desenvolvimento Pessoal');
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentNewsIndex((prevIndex) => 
-        (prevIndex + 1) % positiveNews.length
-      );
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [positiveNews]);
-
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
     try {
       const res = await axios.get('/api/users/me', {
         headers: { 'x-auth-token': localStorage.getItem('token') }
@@ -81,9 +60,9 @@ const Dashboard = () => {
       console.error('Erro ao buscar dados do usuário:', err);
       navigate('/login');
     }
-  };
+  }, [navigate]);
 
-  const fetchGratitudeEntries = async () => {
+  const fetchGratitudeEntries = useCallback(async () => {
     try {
       const res = await axios.get('/api/users/gratitude', {
         headers: { 'x-auth-token': localStorage.getItem('token') }
@@ -92,9 +71,9 @@ const Dashboard = () => {
     } catch (err) {
       console.error('Erro ao buscar entradas de gratidão:', err);
     }
-  };
+  }, []);
 
-  const fetchContent = async () => {
+  const fetchContent = useCallback(async () => {
     try {
       const res = await axios.get('/api/users/content', {
         headers: { 'x-auth-token': localStorage.getItem('token') }
@@ -103,9 +82,9 @@ const Dashboard = () => {
     } catch (err) {
       console.error('Erro ao buscar conteúdo:', err);
     }
-  };
+  }, []);
 
-  const fetchDailyMotivation = async () => {
+  const fetchDailyMotivation = useCallback(async () => {
     try {
       const res = await axios.get('/api/users/motivation', {
         headers: { 'x-auth-token': localStorage.getItem('token') }
@@ -114,9 +93,9 @@ const Dashboard = () => {
     } catch (err) {
       console.error('Erro ao buscar mensagem motivacional:', err);
     }
-  };
+  }, []);
 
-  const fetchPositiveNews = async () => {
+  const fetchPositiveNews = useCallback(async () => {
     const mockNews = [
       { id: 1, title: "Cientistas descobrem nova espécie de árvore que absorve CO2 em taxa recorde", url: "#" },
       { id: 2, title: "Comunidade se une para limpar praia local, removendo toneladas de lixo", url: "#" },
@@ -125,9 +104,9 @@ const Dashboard = () => {
       { id: 5, title: "Voluntários plantam 1 milhão de árvores em área desmatada", url: "#" },
     ];
     setPositiveNews(mockNews);
-  };
+  }, []);
 
-  const fetchYoutubeVideos = async (category) => {
+  const fetchYoutubeVideos = useCallback(async (category) => {
     const API_KEY = 'AIzaSyATEjSujclHMHyKxo6aF1xfWxtpmYccleE';
     
     try {
@@ -146,9 +125,9 @@ const Dashboard = () => {
     } catch (error) {
       console.error('Erro ao buscar vídeos do YouTube:', error);
     }
-  };
+  }, []);
 
-  const fetchEbooks = async (category) => {
+  const fetchEbooks = useCallback(async (category) => {
     const API_KEY = 'AIzaSyATEjSujclHMHyKxo6aF1xfWxtpmYccleE';
     const query = category === 'Todos' ? 'self-help' : category;
     
@@ -169,9 +148,9 @@ const Dashboard = () => {
     } catch (error) {
       console.error('Erro ao buscar eBooks:', error);
     }
-  };
+  }, []);
 
-  const fetchPodcasts = async (category) => {
+  const fetchPodcasts = useCallback(async (category) => {
     const CLIENT_ID = '24a9164a27994b3e9afc67f57ea9900a';
     const CLIENT_SECRET = '7f85f128bf45481a8e287e0937beb09a';
 
@@ -206,7 +185,28 @@ const Dashboard = () => {
     } catch (error) {
       console.error('Erro ao buscar podcasts:', error);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchUserData();
+    fetchGratitudeEntries();
+    fetchContent();
+    fetchDailyMotivation();
+    fetchPositiveNews();
+    fetchYoutubeVideos('Motivação');
+    fetchEbooks('Todos');
+    fetchPodcasts('Desenvolvimento Pessoal');
+  }, [fetchUserData, fetchGratitudeEntries, fetchContent, fetchDailyMotivation, fetchPositiveNews, fetchYoutubeVideos, fetchEbooks, fetchPodcasts]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentNewsIndex((prevIndex) => 
+        (prevIndex + 1) % positiveNews.length
+      );
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [positiveNews]);
 
   const handlePodcastCategoryChange = (category) => {
     setActivePodcastCategory(category);
@@ -375,7 +375,7 @@ const Dashboard = () => {
                   <div className="ebooks-grid">
                     {ebooks.map((ebook) => (
                       <div key={ebook.id} className="ebook-item">
-                        <img src={ebook.thumbnail} alt={ebook.title} className="ebook-cover" />
+                                                <img src={ebook.thumbnail} alt={ebook.title} className="ebook-cover" />
                         <div className="ebook-info">
                           <h3>{ebook.title}</h3>
                           <p>{ebook.authors?.join(', ')}</p>
@@ -443,6 +443,7 @@ const Dashboard = () => {
         <div className="podcast-player">
           <h3>{currentPodcast.name}</h3>
           <iframe
+            title={`Spotify Podcast - ${currentPodcast.name}`}
             src={`https://open.spotify.com/embed/show/${currentPodcast.id}`}
             width="100%"
             height="232"
