@@ -9,7 +9,6 @@ const Dashboard = () => {
   const [user, setUser] = useState(null);
   const [gratitudeEntry, setGratitudeEntry] = useState('');
   const [gratitudeEntries, setGratitudeEntries] = useState([]);
-  const [_content, setContent] = useState({ youtube: [], ebooks: [], podcasts: [] });
   const [activeTab, setActiveTab] = useState('gratitude');
   const [motivationMessage, setMotivationMessage] = useState('');
   const [positiveNews, setPositiveNews] = useState([]);
@@ -75,10 +74,10 @@ const Dashboard = () => {
 
   const fetchContent = useCallback(async () => {
     try {
-      const res = await axios.get('/api/users/content', {
+      await axios.get('/api/users/content', {
         headers: { 'x-auth-token': localStorage.getItem('token') }
       });
-      setContent(res.data);
+      // Dados do conteúdo não estão sendo usados atualmente
     } catch (err) {
       console.error('Erro ao buscar conteúdo:', err);
     }
@@ -155,7 +154,6 @@ const Dashboard = () => {
     const CLIENT_SECRET = '7f85f128bf45481a8e287e0937beb09a';
 
     try {
-      // Obter token de acesso
       const tokenResponse = await axios.post('https://accounts.spotify.com/api/token', 
         'grant_type=client_credentials',
         {
@@ -168,7 +166,6 @@ const Dashboard = () => {
 
       const accessToken = tokenResponse.data.access_token;
 
-      // Buscar podcasts
       const podcastResponse = await axios.get('https://api.spotify.com/v1/search', {
         params: {
           q: category,
@@ -375,7 +372,7 @@ const Dashboard = () => {
                   <div className="ebooks-grid">
                     {ebooks.map((ebook) => (
                       <div key={ebook.id} className="ebook-item">
-                                                <img src={ebook.thumbnail} alt={ebook.title} className="ebook-cover" />
+                        <img src={ebook.thumbnail} alt={ebook.title} className="ebook-cover" />
                         <div className="ebook-info">
                           <h3>{ebook.title}</h3>
                           <p>{ebook.authors?.join(', ')}</p>
