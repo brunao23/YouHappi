@@ -35,5 +35,5 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something broke!');
 });
 
-// Não inicie o servidor aqui. Em vez disso, exporte o app
+// Exporte o app em vez de iniciar o servidor
 module.exports = app;
