@@ -8,4 +8,8 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
+<<<<<<< HEAD
 module.exports = app;
+=======
+module.exports = app;
+>>>>>>> 68f91ff39aac3bd8b408b1236fd72c9ddcc12baf
