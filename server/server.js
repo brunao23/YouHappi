@@ -14,19 +14,35 @@ connectDB();
 // Middleware
 app.use(express.json({ extended: false }));
 
-// Rotas
+// Rotas da API
 app.use('/api/users', userRoutes);
 
 // Serve os arquivos estáticos do React build
 if (process.env.NODE_ENV === 'production') {
+  // Servir arquivos estáticos
   app.use(express.static(path.join(__dirname, '../client/build')));
 
-  // Todas as outras requisições GET não tratadas retornarão nosso app React
+  // Manipular rotas do SPA
   app.get('*', (req, res) => {
+    // Não servir o app React para rotas da API
+    if (req.url.startsWith('/api/')) {
+      return res.status(404).send('API endpoint not found');
+    }
     res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
   });
 }
 
+// Tratamento de erros
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+// Vercel usa uma variável de ambiente diferente para a porta
+const serverPort = process.env.PORT || process.env.VERCEL_PORT || PORT;
+
+app.listen(serverPort, () => console.log(`Servidor rodando na porta ${serverPort}`));
+
+module.exports = app; // Importante para o Vercel
