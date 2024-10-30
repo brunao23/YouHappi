@@ -9,7 +9,7 @@
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "cd client && npm install && npm run build",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "vercel-build": "npm run build && npm run start"
   },
   "author": "Seu Nome",
   "license": "MIT",
@@ -30,6 +30,6 @@
     "nodemon": "^2.0.12"
   },
   "engines": {
-    "node": "14.x"
+    "node": "20.x"
   }
 }
