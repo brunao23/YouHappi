@@ -29,11 +29,10 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-// Tratamento de erros
+// Tratamento de erros mais robusto
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Something broke!');
+  res.status(500).json({ error: 'Algo deu errado!', details: err.message });
 });
 
-// Exporte o app
 module.exports = app;
