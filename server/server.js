@@ -19,12 +19,9 @@ app.use('/api/users', userRoutes);
 
 // Serve os arquivos estáticos do React build
 if (process.env.NODE_ENV === 'production') {
-  // Servir arquivos estáticos
   app.use(express.static(path.join(__dirname, '../client/build')));
 
-  // Manipular rotas do SPA
   app.get('*', (req, res) => {
-    // Não servir o app React para rotas da API
     if (req.url.startsWith('/api/')) {
       return res.status(404).send('API endpoint not found');
     }
@@ -38,16 +35,5 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something broke!');
 });
 
-// Função para iniciar o servidor (útil para desenvolvimento local)
-const startServer = () => {
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
-};
-
-// Iniciar o servidor apenas se não estiver em produção
-if (process.env.NODE_ENV !== 'production') {
-  startServer();
-}
-
-// Exportar o app para uso com serverless functions
+// Exporte o app
 module.exports = app;
